@@ -3,15 +3,16 @@
 ## 1. Demultiplex
 
 ## 2. ustacks, cstacks, sstacks
-The *stacks* construnction was developed with a single bash script with the first three steps of de_novo pipeline of Stacks.
-The code was taked and adaptep from the guide user of stacks
+The *stacks* construction was developed with a single bash script with the first three steps of de novo pipeline of Stacks.
+The code was taking and adapted from the guide user of stacks
 
 - Bash code to run ustacks, cstacks, and sstacks
+
 
 ~~~
 #!/bin/bash
 
-# Path to demultiplex samples
+# Path to demultiplexed samples
 samples=${1}
 
 # Output path
@@ -44,13 +45,12 @@ sh run_stacks path_to_samples output_path* popmap
 ## 3. Extract reads to fasta
 Once we run stacks until the sstacks step, we use python to extract the consensus sequences from the catalog together with the sample information in the matches files. 
 
-In order to write the code, next fact were take in count
-- ustacks generate three filer per analysed sample: snps, alleles, tags
-- cstacks generata a catalog recopilating all information generated in ustacks (also generate snps, alleles, tags)
+In order to write the code, next facts were taken in count
+- ustacks generate three filer per analyzed sample: snps, alleles, tags
+- cstacks generate a catalog that take all information generated in ustacks (also generate snps, alleles, tags)
 - sstacks generate one additional ```.mathces``` file per sample that contain both sample and catalog identifier
 
 Next table is an example of a matches file structure.  (Real file does not contain a header)
-
 
 | **Catalog ID** | **SampleID** | LocusID | LocusID | Depth | CIGAR  |
 |------------|----------|---------|---------|-------|--------|
@@ -65,7 +65,7 @@ Next table is an example of a catalog tag file
 | 0         | **2**        | consensus     | 0     | seq_id1, seq_id2,..., seq_idn | **ATCGATCGATCT** | 0 0 0 |
 | 0         | **3**        | consensus     | 0     | seq_id1, seq_id2,..., seq_idn | **ACGATCGATCG**  | 0 0 0 |
 
-In python, highlighted columns were extracted and used to generate a single table that match with the catalog ID of mathces and Locus ID of catalog tags to generate next dataframe
+In python, highlighted columns were extracted and used to generate a single table that match with the catalog ID of matches  and Locus ID of catalog tags to generate next dataframe.
 
 | Catalog ID | Sample ID | Sequence       |
 |------------|-----------|----------------|
