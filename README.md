@@ -84,12 +84,15 @@ Finally, fasta files were created using ```.to_csv``` function of pandas using `
 
 ## 4. Elastic-blast
 
-We use BLAST to identify consensus sequences obtained through stacks using cloud computing tools. ElasticBlast is a tool that allow to perform alignments of billions reads using cloud computing services of Google Cloud and Amazon Web Services. We decided to use AWS services for this task. Before start, it is need to create some permissions (IAM roles) and increase vCPUs quota. IAM roles were created according to the official guide of (ElasticBlast)[https://blast.ncbi.nlm.nih.gov/doc/elastic-blast/iam-policy.html]. By default, AWS assign a number of vCPUs limit based on the regular use of the users. We need to increase this quota to 200 vCPUs to run elastic blast, to do this, it is need to write an increase solicitude, specifying the new limit, and the reasons of the increase. For this project, the quota increase requirement was accepted after 24 hours. Finally, aws-cli was installed in a local computer establishing the configuration with the was account. 
+We use BLAST to identify consensus sequences obtained through stacks using cloud computing tools. ElasticBlast is a tool that allow to perform alignments of billions reads using cloud computing services of Google Cloud and Amazon Web Services. We decided to use AWS services for this task. Before start, it is need to create permissions and settings in the aws account and the computer were the task is send.
+1. Create IAM roles on the aws account. Elastic-blast requieres permissions to acces to computing instances, storage, read IAM roles, among other requiriments to run. To do this, we create the IAM roles accorging to the tool [website](https://blast.ncbi.nlm.nih.gov/doc/elastic-blast/iam-policy.html)
+2. Increase aws account vCPUs limit. Amazon web services set a limit of vCPUs that the account can use according to the regular use. To increase this limit, a request need to be send to aws. This (website)[https://repost.aws/knowledge-center/ec2-on-demand-instance-vcpu-increase] has the instructions to increase the limit. Take in count that elastic-blast use On-Demand All Standard (A, C, D, H, I, M, R, T, Z) instances.
+3. Install aws-cli establishing the configuration with the account.
+4. A s3 bucket need to be created and contain the fasta file.
 
 Before running the script, we merge all fasta files and remove duplicates to avoid redundant alignments.
 
 We installed ```elastic-blast``` according the guide, and create the next confg file to perform a mega-blast using the nucleotide database (nt):
-
 
 ~~~
 [cloud-provider]
