@@ -117,3 +117,4 @@ elastic-blast submit --cfg BDQA.ini
 Result were obtained ofter 48 hours analsing 75 millions bp in 200 vCPUs
 
 ## 5. Metagenomic analysis
+Once obtained and download the blast results, we create a python script to analyze the aligments. We took and adapt the R code published by [Holmes & Rabosky, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5907781/) where they perform metagenomics analysis of ddRadSeq using pyRAD instead of stacks. 
