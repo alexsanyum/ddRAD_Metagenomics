@@ -80,10 +80,37 @@ Header for fasta file was generated as show next
 | Catalog:39745, Sample: 2         | CGATCGATCGATCG |
 | Catalog:4561, Sample: 3         | GTCAGCTAGCTAGC |
 
-Finally, fasta file was created using ```.to_csv``` function of pandas using ```\n``` as separator
+Finally, fasta files were created using ```.to_csv``` function of pandas using ```\n``` as separator
 
 ## 4. Elastic-blast
 
+We use BLAST to identify consensus sequences obtained through stacks using cloud computing tools. ElasticBlast is a tool that allow to perform alignments of billions reads using cloud computing services of Google Cloud and Amazon Web Services. We decided to use AWS services for this task. Before start, it is need to create some permissions (IAM roles) and increase vCPUs quota. IAM roles were created according to the official guide of (ElasticBlast)[https://blast.ncbi.nlm.nih.gov/doc/elastic-blast/iam-policy.html]. By default, AWS assign a number of vCPUs limit based on the regular use of the users. We need to increase this quota to 200 vCPUs to run elastic blast, to do this, it is need to write an increase solicitude, specifying the new limit, and the reasons of the increase. For this project, the quota increase requirement was accepted after 24 hours. Finally, aws-cli was installed in a local computer establishing the configuration with the was account. 
 
+Before running the script, we merge all fasta files and remove duplicates to avoid redundant alignments.
+
+We installed ```elastic-blast``` according the guide, and create the next confg file to perform a mega-blast using the nucleotide database (nt):
+
+
+~~~
+[cloud-provider]
+aws-region =us-east-1
+
+[cluster]
+num-nodes = 5
+labels = owner=alextest1
+
+[blast]
+program = blastn
+db = nt
+queries = s3://oreos3/meta_data/cat_nd.fasta
+results = s3://oreos3/meta_data/results2
+options = -task dc-megablast -evalue 0.01 -outfmt "6 qseqid sseqid staxids sskingdoms pident mismatch" -max_target_seqs 20
+~~~
+Finally, we run elastic-blast using the next code:
+~~~
+elastic-blast submit --cfg BDQA.ini
+~~~
+
+Result were obtained ofter 48 hours analsing 75 millions bp in 200 vCPUs
 
 ## 5. Metagenomic analysis
