@@ -85,7 +85,7 @@ Finally, fasta files were created using ```.to_csv``` function of pandas using `
 ## 4. Elastic-blast
 
 We use BLAST to identify consensus sequences obtained through stacks using cloud computing tools. ElasticBlast is a tool that allow to perform alignments of billions reads using cloud computing services of Google Cloud and Amazon Web Services. We decided to use AWS services for this task. Before start, it is need to create permissions and settings in the aws account and the computer were the task is send.
-1. Create IAM roles on the aws account. Elastic-blast requieres permissions to acces to computing instances, storage, read IAM roles, among other requiriments to run. To do this, we create the IAM roles accorging to the tool [website](https://blast.ncbi.nlm.nih.gov/doc/elastic-blast/iam-policy.html)
+1. Create IAM roles on the aws account. Elastic-blast requieres permissions to acces to computing instances, storage, read IAM roles, among other requiriments to run. To do this, we create the IAM roles accorging to the tool [website](https://blast.ncbi.nlm.nih.gov/doc/elastic-blast/iam-policy.html).
 2. Increase aws account vCPUs limit. Amazon web services set a limit of vCPUs that the account can use according to the regular use. To increase this limit, a request need to be send to aws. This (website)[https://repost.aws/knowledge-center/ec2-on-demand-instance-vcpu-increase] has the instructions to increase the limit. Take in count that elastic-blast use On-Demand All Standard (A, C, D, H, I, M, R, T, Z) instances.
 3. Install aws-cli establishing the configuration with the account.
 4. A s3 bucket need to be created and contain the fasta file.
