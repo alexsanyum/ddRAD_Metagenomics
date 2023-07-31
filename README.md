@@ -117,5 +117,9 @@ elastic-blast submit --cfg BDQA.ini
 Result were obtained ofter 48 hours analsing 75 millions bp in 200 vCPUs
 
 ## 5. Metagenomic analysis
-Once obtained and download the blast results, we create a python code to analyze the aligments. We took and adapt the R code published by [Holmes & Rabosky, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5907781/) where they perform metagenomics analysis of ddRadSeq using pyRAD. Holmes & Rabosky, 2018 was adaptep to use stacks results instead of pyRAD.
+Once obtained and download the blast results, we create a python code to analyze the aligments. We took and adapt the R code published by [Holmes & Rabosky, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5907781/) where they perform metagenomics analysis of ddRadSeq using pyRAD. Holmes & Rabosky, 2018 code was adaptep to use stacks results instead of pyRAD.
+
+First, mathces and blast results were read as dataframes. Matches were read as same as described in extrac read fasta section. Elastic-blast returned compresed csv files that were read and joined. We extracted TaxID column to get the lineage data using [taxopy](https://github.com/apcamargo/taxopy) package. Taking in count that not all entries in [Taxonomic DB] has the same number of ranks, we just get superkingdom ,phylum ,class ,order ,family ,genus ,species information. In cases were the match just rise to family or genus, nan values were write in next columns. 
+
+Onece read matches, blast results, and taxonomic information were obtained, we merge them into one dataframe. Then, we read popmap table of stacks and mapped againts merged table. Finally, we discarted all raws which class was Amphibia. We also discarted genes that appears once among all samples. 
 
