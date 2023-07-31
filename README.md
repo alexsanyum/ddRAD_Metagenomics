@@ -119,7 +119,27 @@ Result were obtained ofter 48 hours analsing 75 millions bp in 200 vCPUs
 ## 5. Metagenomic analysis
 Once obtained and download the blast results, we create a python code to analyze the aligments. We took and adapt the R code published by [Holmes & Rabosky, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5907781/) where they perform metagenomics analysis of ddRadSeq using pyRAD. Holmes & Rabosky, 2018 code was adaptep to use stacks results instead of pyRAD.
 
-First, mathces and blast results were read as dataframes. Matches were read as same as described in extrac read fasta section. Elastic-blast returned compresed csv files that were read and joined. We extracted TaxID column to get the lineage data using [taxopy](https://github.com/apcamargo/taxopy) package. Taking in count that not all entries in [Taxonomic DB] has the same number of ranks, we just get superkingdom ,phylum ,class ,order ,family ,genus ,species information. In cases were the match just rise to family or genus, nan values were write in next columns. 
+First, mathces and blast results were read as dataframes. Matches were read as same as described in extrac read fasta section. Elastic-blast returned compresed csv files that were read and joined. We extracted TaxID column to get the lineage data using [taxopy](https://github.com/apcamargo/taxopy) package. Taking in count that not all entries in [Taxonomic DB] has the same number of ranks, we just get superkingdom, phylum, class, order, family, genus, and species information. In cases were the match just rise to family or genus, nan values were write in next columns. 
 
 Onece read matches, blast results, and taxonomic information were obtained, we merge them into one dataframe. Then, we read popmap table of stacks and mapped againts merged table. Finally, we discarted all raws which class was Amphibia. We also discarted genes that appears once among all samples. 
 
+Next tables summarize the complete process
+
+Readed Matches File
+| **Catalog ID** | **SampleID** |
+|------------|----------|
+| **192**        | **56**       | 
+| **39745**      | **56**       | 
+
+Blast result dataframe
+|Query ID    |Subject ID    |TaxonomicID    |Description    |Identity%    |Number of mismatches|
+|------------|----------|------------|----------|------------|----------|
+|Catalog:192 | gi1559969735  |315492 | Eukaryota |92.0 | 3|
+|Catalog:39745 |gi1768674649 |112509 | Eukaryota | 95.3 |0 |
+
+Taxonomic contructed table
+
+|Taxonomic ID  | superkingdom | phylum | class | order | family | genus | species|
+|--------------|--------------|--------|-------|-------|--------|-------|--------|
+|315492 |Eukaryota	|Chordata	|Actinopteri	|Acropomatiformes	|Lateolabracidae |	Lateolabrax	|Lateolabrax maculatus|
+|112509 |Eukaryota|	Streptophyta	|Magnoliopsida|	Poales|	Poaceae|	Hordeum	Hordeum vulgare|
